@@ -1,5 +1,6 @@
 import os
 import http.client
+import urllib.request
 import sys
 import threading
 import time
@@ -15,15 +16,19 @@ def StartServer():
     except(KeyboardInterrupt):
         print ("\n Server With Process ID " + str(os.getpid()) + " Has Stopped")
 
-def RetrieveIndexPage():
-    site = http.client.HTTPConnection('localhost')
-    site.request('GET', '/')
-    response = site.getresponse()
-    print("Test Access To 'localhost' Reponse: ")
-    print (response.status, response.reason)
+class HTTPRequester():
+    def TestRetrieveIndexPage(self):
+        URL = 'localhost'
+        TestURL = http.client.HTTPConnection('localhost')
+        TestURL.request('GET', '/')
+        Page = urllib.request.urlopen('http://' + URL + '/')
+        PageContents = Page.read()
+        print ("Test Access To 'localhost' Reponse: ")
+        print (response.status, response.reason)
 
 if __name__ == '__main__':
     ServerProcess = threading.Thread(name="Link Testing Server", target=StartServer)
     ServerProcess.start()
     time.sleep(3)
-    RetrieveIndexPage()
+    RequestPage = HTTPRequester()
+    RequestPage.TestRetrieveIndexPage()
